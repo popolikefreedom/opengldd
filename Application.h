@@ -1,6 +1,9 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "Window.h"
+#include <memory>
+
 namespace CC
 {
 
@@ -13,6 +16,8 @@ namespace CC
         void run();
 
     private:
+        std::unique_ptr<Window> m_Window;
+        bool m_Running = true;
     };
 }
 
