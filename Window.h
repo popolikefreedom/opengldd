@@ -3,6 +3,8 @@
 #include <string>
 #include <functional>
 
+#include "event/Event.h"
+
 
 namespace CC
 {
@@ -29,9 +31,9 @@ namespace CC
         virtual uint32_t getWidth() const = 0;
         virtual uint32_t getHeight() const = 0;
 
-        // using EventCallbackFn = std::function<void(OnUpdate&)>;
+        using EventCallbackFn = std::function<void(Event&)>;
 
-        // virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
+        virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
         virtual void SetVSync(bool enable) = 0;
         virtual bool IsVSync() const = 0;
 

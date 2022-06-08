@@ -13,6 +13,8 @@ namespace CC
         uint32_t Width;
         uint32_t Height;
         bool VSync;
+
+        Window::EventCallbackFn callback;
     };
     
 
@@ -30,6 +32,8 @@ namespace CC
 
         void SetVSync(bool enable) override;
         bool IsVSync() const override;
+
+        void SetEventCallback(const EventCallbackFn& callback) override;
 
     private:
         void Init(const WindowProps& props);

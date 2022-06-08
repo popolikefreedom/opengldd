@@ -1,5 +1,7 @@
 #include "LinuxWindows.h"
 #include "../logging.h"
+#include "../event/ApplicationEvent.h"
+#include "../event/KeyEvent.h"
 
 namespace CC
 {
@@ -36,11 +38,44 @@ namespace CC
         }
 
         m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
         glfwMakeContextCurrent(m_Window);
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
-    }
 
+        // set glfw callbacks
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window)
+                                   {
+            WindowData& data = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowCloseEvent event;
+            data.callback(event); });
+
+        glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
+                           {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			switch (action)
+			{
+				case GLFW_PRESS:
+				{
+					KeyPressedEvent event(key, 0);
+					data.callback(event);
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					KeyReleasedEvent event(key);
+					data.callback(event);
+					break;
+				}
+				case GLFW_REPEAT:
+				{
+					KeyPressedEvent event(key, 1);
+					data.callback(event);
+					break;
+				}
+			} });
+    }
 
     void LinuxWindows::shutDown()
     {
@@ -49,7 +84,7 @@ namespace CC
 
     void LinuxWindows::OnUpdate()
     {
-        glClearColor(1,0,1,1);
+        glClearColor(1, 0, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glfwPollEvents();
@@ -65,5 +100,10 @@ namespace CC
     bool LinuxWindows::IsVSync() const
     {
         return m_Data.VSync;
+    }
+
+    void LinuxWindows::SetEventCallback(const EventCallbackFn &callback)
+    {
+        m_Data.callback = callback;
     }
 }
