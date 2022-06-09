@@ -30,6 +30,7 @@ namespace CC
         m_Data.Width = props.Width;
 
         LOGI("init Window {0}, {1}, {2}", props.Title, props.Width, props.Height);
+        LOGI("init Window data{0}, {1}, {2}", m_Data.Title, m_Data.Width, m_Data.Height);
         if (!s_GLFWInitialized)
         {
             int success = glfwInit();
@@ -84,8 +85,8 @@ namespace CC
 
     void LinuxWindows::OnUpdate()
     {
-        glClearColor(1, 0, 1, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        // glClear(GL_COLOR_BUFFER_BIT);
 
         glfwPollEvents();
         glfwSwapBuffers(m_Window);

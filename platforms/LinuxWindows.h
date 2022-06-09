@@ -2,6 +2,7 @@
 #define LINUXWINDOWS_H
 
 #include "../Window.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace CC
@@ -33,6 +34,7 @@ namespace CC
         void SetVSync(bool enable) override;
         bool IsVSync() const override;
 
+        void* GetNativeWindow() const {return m_Window;};
         void SetEventCallback(const EventCallbackFn& callback) override;
 
     private:

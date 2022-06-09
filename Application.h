@@ -6,6 +6,7 @@
 #include "event/Event.h"
 #include "event/ApplicationEvent.h"
 #include <functional>
+#include "LayerStack.h"
 
 namespace CC
 {
@@ -22,9 +23,19 @@ namespace CC
         void OnEvent(Event& e);
 
         bool OnWindowClose(WindowCloseEvent& e);
+        static Application& Get(){return *application;}
+
+        Window& getWindow(){return *m_Window;}
+
+        void PushLayer(Layers* layer);
+		void PushOverlay(Layers* layer);
+   
     private:
-        std::unique_ptr<Window> m_Window;
+        Window *m_Window;
         bool m_Running = true;
+
+        static Application *application;
+        LayerStack m_LayerStack;
     };
 }
 
